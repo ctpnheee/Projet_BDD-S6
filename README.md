@@ -1,7 +1,8 @@
 # Projet Base de Données — Plateforme de Tournois E-sport
 
 Projet binôme ING1-LSI1-APP-S6 — EFREI 2025/2026  
-SGBD : **MySQL 8.x** | Application : **Java (JDBC + Swing)**
+SGBD : **MySQL 8.x** | Application : **Java (JDBC + Swing)**  
+**Acteurs :** CHAU Thi Phuong Nhi, CRISOSTOMO Jhermaine
 
 ---
 
@@ -79,7 +80,7 @@ Projet_BDD/
 |---|---|
 | JDK | 17 |
 | MySQL | 8.x |
-| mysql-connector-j | 8.2.0 ✔ (déjà présent dans `lib/`) |
+| mysql-connector-j | 8.2.0  (déjà présent dans `lib/`) |
 
 ---
 
