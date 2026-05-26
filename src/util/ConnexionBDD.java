@@ -10,7 +10,7 @@ public class ConnexionBDD {
             "jdbc:mysql://localhost:3306/esport"
             + "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
-    private static final String PASS = "root";
+    private static final String PASS = "votre-mot-de-passe";
 
     private static Connection instance = null;
 
