@@ -111,6 +111,46 @@ public class JoueurDAO {
         }
     }
 
+    // Nombre de lignes de roster référençant ce joueur (bloque la suppression directe)
+    public int compterRosters(int idJoueur) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Roster WHERE id_joueur = ?";
+        try (PreparedStatement ps = ConnexionBDD.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, idJoueur);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+    // SUPPRESSION en cascade applicative : retire d'abord les rosters (RESTRICT),
+    // puis le joueur. Les statistiques sont supprimées automatiquement (ON DELETE CASCADE).
+    public boolean supprimerJoueurAvecRosters(int idJoueur) throws SQLException {
+        Connection cnx = ConnexionBDD.getConnection();
+        boolean autoCommit = cnx.getAutoCommit();
+        try {
+            cnx.setAutoCommit(false);
+            try (PreparedStatement psRoster = cnx.prepareStatement(
+                    "DELETE FROM Roster WHERE id_joueur = ?")) {
+                psRoster.setInt(1, idJoueur);
+                psRoster.executeUpdate();
+            }
+            boolean supprime;
+            try (PreparedStatement psJoueur = cnx.prepareStatement(
+                    "DELETE FROM Joueur WHERE id_joueur = ?")) {
+                psJoueur.setInt(1, idJoueur);
+                supprime = psJoueur.executeUpdate() > 0;
+            }
+            cnx.commit();
+            return supprime;
+        } catch (SQLException e) {
+            cnx.rollback();
+            throw e;
+        } finally {
+            cnx.setAutoCommit(autoCommit);
+        }
+    }
+
     // Palmarès : tournois joués + victoires (équipe vainqueur)
     public void afficherPalmares(int idJoueur) throws SQLException {
         String sql =

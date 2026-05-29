@@ -137,6 +137,23 @@ public class MenuJoueur {
                 System.out.println("  Annulé.");
                 return;
             }
+
+            int nbRosters = dao.compterRosters(id);
+            if (nbRosters > 0) {
+                System.out.println("  Ce joueur figure dans " + nbRosters
+                        + " roster(s) d'équipe : sa suppression directe est interdite.");
+                System.out.print("  Le retirer de ces roster(s) puis le supprimer ? (o/N) : ");
+                if (!sc.nextLine().trim().equalsIgnoreCase("o")) {
+                    System.out.println("  Annulé.");
+                    return;
+                }
+                if (dao.supprimerJoueurAvecRosters(id))
+                    System.out.println("  Joueur (et ses rosters) supprimé.");
+                else
+                    System.out.println("  Joueur introuvable.");
+                return;
+            }
+
             if (dao.supprimerJoueur(id)) System.out.println("  Joueur supprimé.");
             else System.out.println("  Joueur introuvable ou suppression impossible.");
         } catch (NumberFormatException e) {

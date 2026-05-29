@@ -138,6 +138,16 @@ public class PanelJoueur extends JPanel {
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (confirm != JOptionPane.YES_OPTION) return;
         try {
+            int nbRosters = dao.compterRosters(id);
+            if (nbRosters > 0) {
+                int cascade = JOptionPane.showConfirmDialog(this,
+                        "« " + ps + " » figure dans " + nbRosters + " roster(s) d'équipe.\n"
+                        + "Le retirer de ces roster(s) puis le supprimer ?",
+                        "Suppression bloquée", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (cascade != JOptionPane.YES_OPTION) return;
+                if (dao.supprimerJoueurAvecRosters(id)) charger();
+                return;
+            }
             if (dao.supprimerJoueur(id)) charger();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erreur SQL", JOptionPane.ERROR_MESSAGE);
